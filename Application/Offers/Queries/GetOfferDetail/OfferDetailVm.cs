@@ -17,8 +17,9 @@ namespace OfferMakerForCggCQRS.Application.Common.Mappings
         public string Description { get; set; }
         public List<NestedProductsDetailsVm> Products { get; set; }
         public DateTime Created { get; set; }
-
         public Client Client { get; set; }
+        public int ProductsCount { get; set; }
+        public decimal ProductsPrice { get; set; }
 
 
         public void Mapping(Profile profile)

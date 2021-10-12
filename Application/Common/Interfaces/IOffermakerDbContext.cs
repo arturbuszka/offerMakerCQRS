@@ -9,6 +9,7 @@ namespace OfferMakerForCggCQRS.Persistence
         DbSet<Offer> Offers { get; set; }
         DbSet<Client> Clients { get; set; }
         DbSet<Product> Products { get; set; }
+        DbSet<ProductMenu> ProductsMenu { get; set; }
 
         Task<int> SaveChangesAsync();
     }

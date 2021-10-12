@@ -33,6 +33,8 @@ namespace OfferMakerForCggCQRS.Application.Offers.Commands
                         PostalCode = command.PostalCode,
                         Description = command.Description,
                         Products = command.Products,
+                        ProductsCount = command.ProductsCount,
+                        ProductsPrice = command.ProductsPrice,
                         Created = command.Created,
                         CreatedBy = userName
                     };

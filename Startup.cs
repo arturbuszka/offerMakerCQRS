@@ -24,6 +24,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using OfferMakerForCggCQRS.Application.Common.Interfaces;
 using System.Security.Claims;
+using DinkToPdf.Contracts;
+using DinkToPdf;
+using OfferMakerForCggCQRS.Application.Common.Services;
 
 namespace OfferMakerForCggCQRS
 {
@@ -42,6 +45,16 @@ namespace OfferMakerForCggCQRS
             Configuration.GetSection("Authentication").Bind(authenticationSettings);
 
             services.AddSingleton(authenticationSettings);
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("frontClient", builder => {
+                    builder.WithOrigins("http://localhost:4200")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowCredentials();
+                });
+            });
 
             services.AddAuthentication(option =>
             {
@@ -67,6 +80,7 @@ namespace OfferMakerForCggCQRS
             services.AddHttpContextAccessor();
             services.AddScoped<IUserManager, UserManagerService>();
             services.AddScoped<IRoleManager, RoleManagerService>();
+            services.AddScoped<IPdfConverter, PdfConverter>();
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -104,6 +118,7 @@ namespace OfferMakerForCggCQRS
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestLogger<>));
+            services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
 
         }
@@ -115,6 +130,7 @@ namespace OfferMakerForCggCQRS
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseCors("frontClient");
             app.UseAuthentication();
 
             app.UseHttpsRedirection();

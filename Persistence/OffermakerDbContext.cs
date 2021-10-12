@@ -9,6 +9,7 @@ namespace OfferMakerForCggCQRS.Persistence
         public DbSet<Offer> Offers { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<ProductMenu> ProductsMenu { get; set; }
         public OffermakerDbContext(DbContextOptions<OffermakerDbContext> options) : base(options)
         {
         }

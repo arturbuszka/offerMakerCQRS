@@ -34,6 +34,7 @@ namespace OfferMakerForCggCQRS.Application.Offers.Queries.GetOffersList
             var baseQuery = _context
              .Offers
              .Include(p => p.Products)
+             .Include(c => c.Client)
              .AsQueryable();
              
             

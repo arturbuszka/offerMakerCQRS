@@ -35,8 +35,8 @@ namespace OfferMakerForCggCQRS.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Nip")
-                        .HasColumnType("int");
+                    b.Property<string>("Nip")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
@@ -86,10 +86,18 @@ namespace OfferMakerForCggCQRS.Migrations
                     b.Property<string>("PostalCode")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ProductsCount")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("ProductsPrice")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("Street")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
 
                     b.ToTable("Offers");
                 });
@@ -121,6 +129,32 @@ namespace OfferMakerForCggCQRS.Migrations
                     b.HasIndex("OfferId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("OfferMakerForCggCQRS.Domain.Entities.ProductMenu", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductsMenu");
+                });
+
+            modelBuilder.Entity("OfferMakerForCggCQRS.Domain.Entities.Offer", b =>
+                {
+                    b.HasOne("OfferMakerForCggCQRS.Domain.Entities.Client", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Client");
                 });
 
             modelBuilder.Entity("OfferMakerForCggCQRS.Domain.Entities.Product", b =>

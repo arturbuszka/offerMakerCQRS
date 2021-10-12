@@ -19,7 +19,10 @@ namespace OfferMakerForCggCQRS.Application.Offers.Queries.GetOffersList
         public DateTime DateOfWork { get; set; }
         public string Description { get; set; }
         public List<NestedProductsListVm> Products { get; set; }
+        public Client Client { get; set; }
         public DateTime Created { get; set; }
+        public int ProductsCount { get; set; }
+        public decimal ProductsPrice { get; set; }
 
 
         public void Mapping(Profile profile)

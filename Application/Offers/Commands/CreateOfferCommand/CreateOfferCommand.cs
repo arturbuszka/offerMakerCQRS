@@ -16,8 +16,9 @@ namespace OfferMakerForCggCQRS.Application.Offers.Commands
         public DateTime DateOfWork { get; set; }
         public string Description { get; set; }
         public List<Product> Products { get; set; }
-
         public string CreatedBy { get; set; }
         public DateTime Created { get; set; } = DateTime.Now;
+        public int ProductsCount { get; set; }
+        public decimal ProductsPrice { get; set; }
     }
 }
