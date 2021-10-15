@@ -27,24 +27,28 @@ using System.Security.Claims;
 using DinkToPdf.Contracts;
 using DinkToPdf;
 using OfferMakerForCggCQRS.Application.Common.Services;
+using OfferMakerForCggCQRS.Application;
+using OfferMakerForCggCQRS.Infrastructure;
 
 namespace OfferMakerForCggCQRS
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
+            Environment = environment;
         }
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Environment { get; }
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            var authenticationSettings = new AuthenticationSettings();
-            Configuration.GetSection("Authentication").Bind(authenticationSettings);
+            //var authenticationSettings = new AuthenticationSettings();
+            //Configuration.GetSection("Authentication").Bind(authenticationSettings);
 
-            services.AddSingleton(authenticationSettings);
+            //services.AddSingleton(authenticationSettings);
 
             services.AddCors(options =>
             {
@@ -56,33 +60,33 @@ namespace OfferMakerForCggCQRS
                 });
             });
 
-            services.AddAuthentication(option =>
-            {
-                option.DefaultAuthenticateScheme = "Bearer";
-                option.DefaultScheme = "Bearer";
-                option.DefaultChallengeScheme = "Bearer";
-            })
-                .AddJwtBearer(cfg =>
-                {
-                    cfg.RequireHttpsMetadata = false;
-                    cfg.SaveToken = true;
-                    cfg.TokenValidationParameters =
-                    new TokenValidationParameters
-                    {
-                        ValidIssuer = authenticationSettings.JwtIssuer,
-                        ValidAudience = authenticationSettings.JwtIssuer,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey))
+            //services.AddAuthentication(option =>
+            //{
+            //    option.DefaultAuthenticateScheme = "Bearer";
+            //    option.DefaultScheme = "Bearer";
+            //    option.DefaultChallengeScheme = "Bearer";
+            //})
+            //    .AddJwtBearer(cfg =>
+            //    {
+            //        cfg.RequireHttpsMetadata = false;
+            //        cfg.SaveToken = true;
+            //        cfg.TokenValidationParameters =
+            //        new TokenValidationParameters
+            //        {
+            //            ValidIssuer = authenticationSettings.JwtIssuer,
+            //            ValidAudience = authenticationSettings.JwtIssuer,
+            //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey))
 
-                    };
-                });
+            //        };
+            //    });
 
             services.AddScoped<IUserContextService, UserContextService>();
             services.AddHttpContextAccessor();
-            services.AddScoped<IUserManager, UserManagerService>();
-            services.AddScoped<IRoleManager, RoleManagerService>();
-            services.AddScoped<IPdfConverter, PdfConverter>();
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddInfrastructure(Configuration, Environment);
+            //services.AddScoped<IUserManager, UserManagerService>();
+            //services.AddScoped<IRoleManager, RoleManagerService>();
+            //services.AddDbContext<ApplicationDbContext>(options =>
+            //    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
 
             services.AddDbContext<OffermakerDbContext>(options =>
@@ -90,9 +94,9 @@ namespace OfferMakerForCggCQRS
                 b => b.MigrationsAssembly(typeof(OffermakerDbContext).Assembly.FullName)));
 
 
-            services.AddDefaultIdentity<ApplicationUser>()
-                .AddRoles<ApplicationRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            //services.AddDefaultIdentity<ApplicationUser>()
+            //    .AddRoles<ApplicationRole>()
+            //    .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddSwaggerGen(c =>
             {
@@ -105,20 +109,15 @@ namespace OfferMakerForCggCQRS
 
             });
             services.AddScoped<IOffermakerDbContext>(provider => provider.GetService<OffermakerDbContext>());
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddApplication();
 
-
-            services.AddAuthorization(options =>
-                options.AddPolicy("Admin", p =>
-                p.RequireRole("Admin")));
+            //services.AddAuthorization(options =>
+            //    options.AddPolicy("Admin", p =>
+            //    p.RequireRole("Admin")));
             services.AddControllers().AddFluentValidation();
 
             services.AddValidatorsFromAssembly(typeof(Startup).Assembly);
 
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestLogger<>));
-            services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
 
         }
