@@ -35,10 +35,11 @@ namespace OfferMakerForCggCQRS.Application.Offers.Queries.GetOffersList
              .Offers
              .Include(p => p.Products)
              .Include(c => c.Client)
-             .AsQueryable();
-             
-            
-             //.Where(s => paginationVariable.SearchPhrase == null || (s.WorkCity.ToLower().Contains(paginationVariable.SearchPhrase.ToLower())));
+             .AsQueryable()
+               .Where(s => paginationVariable.SearchPhrase == null || (s.City.ToLower().Contains(paginationVariable.SearchPhrase.ToLower())));
+
+
+            //.Where(s => paginationVariable.SearchPhrase == null || (s.WorkCity.ToLower().Contains(paginationVariable.SearchPhrase.ToLower())));
 
 
             if (!string.IsNullOrEmpty(paginationVariable.SortBy))
@@ -61,7 +62,7 @@ namespace OfferMakerForCggCQRS.Application.Offers.Queries.GetOffersList
              .Take(paginationVariable.PageSize)
              .ToListAsync(cancellationToken);
 
-            var totalItemsCount = offers.Count;
+            var totalItemsCount =  await baseQuery.CountAsync();
 
 
             var result = new PagedResult<OffersListVm>(offers, totalItemsCount, paginationVariable.PageSize, paginationVariable.PageNumber);
