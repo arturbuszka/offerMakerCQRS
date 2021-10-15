@@ -19,7 +19,7 @@ namespace OfferMakerForCggCQRS.Application.Offers.Commands.ConvertOfferToPdfComm
 
         public async Task<string> Handle(ConvertOfferToPdfCommand request, CancellationToken cancellationToken)
         {
-            var asd = await Task.Run(() =>_pdfConverter.GeneratePdf(request.Id, request.Products));
+            var pdfFile = await Task.Run(() =>_pdfConverter.GeneratePdf(request.Id, request.Products));
 
             return "Ok";
         }

@@ -2,6 +2,7 @@
 using OfferMakerForCggCQRS.Application.Common.Interfaces;
 using OfferMakerForCggCQRS.Domain.Entities;
 using OfferMakerForCggCQRS.Persistence;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,6 +23,7 @@ namespace OfferMakerForCggCQRS.Application.Offers.Commands
             public async Task<int> Handle(CreateOfferCommand command, CancellationToken cancellationToken)
             {
 
+
                 var userName = _userContextService.User.Identity.Name;
 
                 var entity = new Offer
@@ -36,7 +38,8 @@ namespace OfferMakerForCggCQRS.Application.Offers.Commands
                         ProductsCount = command.ProductsCount,
                         ProductsPrice = command.ProductsPrice,
                         Created = command.Created,
-                        CreatedBy = userName
+                        CreatedBy = userName,
+                        DateOfWork = command.DateOfWork
                     };
 
                     _context.Offers.Add(entity);

@@ -45,7 +45,7 @@ namespace OfferMakerForCggCQRS.Application.Common.Services
 
         }
 
-        private static string BuildHtmlTableString(List<Product> products)
+        private string BuildHtmlTableString(List<Product> products)
         {
             string stringBuilder = "";
             foreach (var p in products)
@@ -56,7 +56,7 @@ namespace OfferMakerForCggCQRS.Application.Common.Services
             return stringBuilder;
         }
 
-        private static GlobalSettings BuildGlobalSettings(int id, string filePath)
+        private GlobalSettings BuildGlobalSettings(int id, string filePath)
         {
             var glb = new GlobalSettings
             {
@@ -77,7 +77,7 @@ namespace OfferMakerForCggCQRS.Application.Common.Services
             return glb;
         }
 
-        private static ObjectSettings BuildObjectSettings(string htmlString)
+        private ObjectSettings BuildObjectSettings(string htmlString)
         {
             var objectSettings = new ObjectSettings
             {

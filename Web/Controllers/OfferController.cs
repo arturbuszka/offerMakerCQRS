@@ -55,7 +55,7 @@ namespace OfferMakerForCggCQRS.Web.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> Update([FromBody] UpdateOfferCommand command)
+        public async Task<ActionResult> Update(UpdateOfferCommand command)
         {
             await Mediator.Send(command);
 
