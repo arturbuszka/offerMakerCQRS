@@ -27,7 +27,7 @@ namespace OfferMakerForCggCQRS.Infrastructure
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
 
-
+            services.AddScoped<IUserContextService, UserContextService>();
             services.AddAuthentication(option =>
             {
                 option.DefaultAuthenticateScheme = "Bearer";

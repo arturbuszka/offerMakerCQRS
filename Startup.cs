@@ -45,11 +45,6 @@ namespace OfferMakerForCggCQRS
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            //var authenticationSettings = new AuthenticationSettings();
-            //Configuration.GetSection("Authentication").Bind(authenticationSettings);
-
-            //services.AddSingleton(authenticationSettings);
-
             services.AddCors(options =>
             {
                 options.AddPolicy("frontClient", builder => {
@@ -60,43 +55,15 @@ namespace OfferMakerForCggCQRS
                 });
             });
 
-            //services.AddAuthentication(option =>
-            //{
-            //    option.DefaultAuthenticateScheme = "Bearer";
-            //    option.DefaultScheme = "Bearer";
-            //    option.DefaultChallengeScheme = "Bearer";
-            //})
-            //    .AddJwtBearer(cfg =>
-            //    {
-            //        cfg.RequireHttpsMetadata = false;
-            //        cfg.SaveToken = true;
-            //        cfg.TokenValidationParameters =
-            //        new TokenValidationParameters
-            //        {
-            //            ValidIssuer = authenticationSettings.JwtIssuer,
-            //            ValidAudience = authenticationSettings.JwtIssuer,
-            //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey))
 
-            //        };
-            //    });
-
-            services.AddScoped<IUserContextService, UserContextService>();
+            //services.AddScoped<IUserContextService, UserContextService>();
             services.AddHttpContextAccessor();
             services.AddInfrastructure(Configuration, Environment);
-            //services.AddScoped<IUserManager, UserManagerService>();
-            //services.AddScoped<IRoleManager, RoleManagerService>();
-            //services.AddDbContext<ApplicationDbContext>(options =>
-            //    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddPersistence(Configuration);
 
-
-            services.AddDbContext<OffermakerDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
-                b => b.MigrationsAssembly(typeof(OffermakerDbContext).Assembly.FullName)));
-
-
-            //services.AddDefaultIdentity<ApplicationUser>()
-            //    .AddRoles<ApplicationRole>()
-            //    .AddEntityFrameworkStores<ApplicationDbContext>();
+            //services.AddDbContext<OffermakerDbContext>(options =>
+            //    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+            //    b => b.MigrationsAssembly(typeof(OffermakerDbContext).Assembly.FullName)));
 
             services.AddSwaggerGen(c =>
             {
@@ -108,17 +75,13 @@ namespace OfferMakerForCggCQRS
                 });
 
             });
-            services.AddScoped<IOffermakerDbContext>(provider => provider.GetService<OffermakerDbContext>());
+            //services.AddScoped<IOffermakerDbContext>(provider => provider.GetService<OffermakerDbContext>());
+
             services.AddApplication();
 
-            //services.AddAuthorization(options =>
-            //    options.AddPolicy("Admin", p =>
-            //    p.RequireRole("Admin")));
             services.AddControllers().AddFluentValidation();
 
             services.AddValidatorsFromAssembly(typeof(Startup).Assembly);
-
-
 
         }
 

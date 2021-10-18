@@ -26,7 +26,7 @@ namespace OfferMakerForCggCQRS.Application.Offers.Queries.GetOfferDetail
         {
             var entity = await _context.Offers
                         .Include(p => p.Products)
-                        .Include(c => c.Products)
+                        .Include(c => c.Client)
                         .FirstOrDefaultAsync(o => o.Id == request.Id);
                 
 

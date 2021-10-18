@@ -10,6 +10,7 @@ using OfferMakerForCggCQRS.Application.Offers.Commands.ConvertOfferToPdfCommand;
 using OfferMakerForCggCQRS.Application.Offers.Commands.DeleteOfferCommand;
 using OfferMakerForCggCQRS.Application.Offers.Commands.UpdateOfferCommand;
 using OfferMakerForCggCQRS.Application.Offers.Queries.GetOfferDetail;
+using OfferMakerForCggCQRS.Application.Offers.Queries.GetOfferPdf;
 using OfferMakerForCggCQRS.Application.Offers.Queries.GetOffersList;
 
 using OfferMakerForCggCQRS.Domain.Entities;
@@ -38,14 +39,6 @@ namespace OfferMakerForCggCQRS.Web.Controllers
         }
 
 
-        [HttpPost("pdf")]
-        public async Task<ActionResult<Product>> GeneratePdf(ConvertOfferToPdfCommand command)
-        {
-            await Mediator.Send(command);
-
-            return Ok();
-        }
-
         [HttpGet]
         public async Task<ActionResult<PagedResult<OffersListVm>>> GetAll([FromQuery] PaginationQuery query)
         {
@@ -68,6 +61,22 @@ namespace OfferMakerForCggCQRS.Web.Controllers
             await Mediator.Send(new DeleteOfferCommand { Id = id });
 
             return NoContent();
+        }
+
+        [HttpPost("pdf")]
+        public async Task<ActionResult<ProductModel>> GeneratePdf(ConvertOfferToPdfCommand command)
+        {
+            await Mediator.Send(command);
+
+            return Ok();
+        }
+
+        [HttpGet("pdf/{id}")]
+        public async Task<ActionResult<PdfFileModel>> DownloadPdf([FromRoute] int id)
+        {
+            var file = await Mediator.Send(new GetOfferPdfQuery() { Id = id });
+
+            return File(file.Content, file.ContentType, file.FilePath);
         }
 
     }

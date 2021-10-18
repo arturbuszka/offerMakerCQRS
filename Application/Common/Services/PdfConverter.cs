@@ -1,7 +1,11 @@
 ﻿
 using DinkToPdf;
 using DinkToPdf.Contracts;
+using Microsoft.AspNetCore.StaticFiles;
 using OfferMakerForCggCQRS.Application.Common.Interfaces;
+using OfferMakerForCggCQRS.Application.Common.Models;
+using OfferMakerForCggCQRS.Application.Common.Settings;
+using OfferMakerForCggCQRS.Application.Offers.Commands.ConvertOfferToPdfCommand;
 using OfferMakerForCggCQRS.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -21,17 +25,18 @@ namespace OfferMakerForCggCQRS.Application.Common.Services
             _convert = convert;
         }
 
-        public string GeneratePdf(int id, List<Product> products)
+        public string GeneratePdf(int id, ConvertOfferToPdfCommand offer)
         {
 
+            
             string fileName = $"{id}.pdf";
-            string filePath = $@"C:\\dink\\{fileName}";
+            string filePath = FilesSettings.FilePath+fileName;
 
-            string tableString = BuildHtmlTableString(products);
+            //string tableString = BuildHtmlTableString(offer.Products);
 
             var glb = BuildGlobalSettings(id, filePath);
 
-            var objectSettings = BuildObjectSettings(tableString);
+            var objectSettings = BuildObjectSettings(offer);
 
             var pdf = new HtmlToPdfDocument
             {
@@ -42,21 +47,34 @@ namespace OfferMakerForCggCQRS.Application.Common.Services
             _convert.Convert(pdf);
             return filePath;
 
+        }
+        public async Task<PdfFileModel> DownloadPdf(int id)
+        {
+            var filePath = FilesSettings.FilePath + $"{id}.pdf";
+            var memory = new MemoryStream();
+            await using(var stream = new FileStream(filePath, FileMode.Open))
+            {
+                await stream.CopyToAsync(memory);
+            }
+            memory.Position = 0;
 
+            PdfFileModel file = new PdfFileModel(memory, GetContentType(filePath), filePath);
+            return file;
         }
 
-        private string BuildHtmlTableString(List<Product> products)
+        private static string BuildHtmlTableString(List<ProductModel> products)
         {
             string stringBuilder = "";
             foreach (var p in products)
             {
-                stringBuilder += $"<tr><td>{p.Name}</td><td>{p.Quantity}</td><td>{p.PriceEach}</td><td>p.PriceTotal</td><td>{p.Description}</td></tr>";
+                p.ToString();
+                stringBuilder += $"<tr><td>Count</td><td>{p.Name}</td><td>{p.Quantity}</td><td>{p.PriceEach}</td><td>{p.PriceTotal}</td><td>{p.Description}</td></tr>";
             }
 
             return stringBuilder;
         }
 
-        private GlobalSettings BuildGlobalSettings(int id, string filePath)
+        private static GlobalSettings BuildGlobalSettings(int id, string filePath)
         {
             var glb = new GlobalSettings
             {
@@ -77,16 +95,28 @@ namespace OfferMakerForCggCQRS.Application.Common.Services
             return glb;
         }
 
-        private ObjectSettings BuildObjectSettings(string htmlString)
+        private static ObjectSettings BuildObjectSettings(ConvertOfferToPdfCommand offer)
         {
             var objectSettings = new ObjectSettings
             {
                 PagesCount = true,
-                HtmlContent = $"<table>{htmlString}</table>",
-                WebSettings = { DefaultEncoding = "utf-8", UserStyleSheet = null }
+                HtmlContent = HtmlTemplateBuilder.HtmlStringBuilder(offer),
+                WebSettings = { DefaultEncoding = "utf-8", UserStyleSheet = Path.GetFullPath(@"C:\Users\OG KACIORR\source\repos\OfferMakerForCggCQRS\Application\Common\Settings\CssSettings.css") }
             };
 
             return objectSettings;
+        }
+        private string GetContentType(string path)
+        {
+            var provider = new FileExtensionContentTypeProvider();
+            string contentType;
+
+            if (!provider.TryGetContentType(path, out contentType))
+            {
+                contentType = "application/octet-stream";
+            }
+
+            return contentType;
         }
 
     }
