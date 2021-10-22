@@ -7,7 +7,7 @@ namespace OfferMakerForCggCQRS.Application.Common.Settings
 {
     public class SmtpClientSettings
     {
-        public string SenderAddress { get; set; } = "no-reply@lostmyjacket.com";
+        public string SenderAddress { get; set; } = "no-reply@cgg.com";
         public string SenderDisplayName { get; set; } = "CGG";
         public string UserName { get; set; } = "5dc3d502f19b8f";
         public string Password { get; set; } = "18257f1e9c8c97";
