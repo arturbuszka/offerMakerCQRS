@@ -13,12 +13,12 @@ namespace OfferMakerForCggCQRS.Application.Common.Services
     public class EmailService : IEmailService
     {
 
-        private readonly SmtpClientSettings _config;
+        private readonly SmtpClientSettings _stmpSettings;
         private readonly NetworkSettings _networkSettings;
 
-        public EmailService(SmtpClientSettings config, NetworkSettings networkSettings)
+        public EmailService(SmtpClientSettings stmpSettings, NetworkSettings networkSettings)
         {
-            _config = config;
+            _stmpSettings = stmpSettings;
             _networkSettings = networkSettings;
         }
 
@@ -68,16 +68,16 @@ namespace OfferMakerForCggCQRS.Application.Common.Services
         {
             NetworkCredential networkCredentials = new NetworkCredential()
             {
-                Password = _config.Password,
-                UserName = _config.UserName
+                Password = _stmpSettings.Password,
+                UserName = _stmpSettings.UserName
             };
 
             return new SmtpClient()
             {
-                Host = _config.Host,
-                Port = _config.Port,
-                EnableSsl = _config.EnableSSL,
-                UseDefaultCredentials = _config.UseDefaultCredentials,
+                Host = _stmpSettings.Host,
+                Port = _stmpSettings.Port,
+                EnableSsl = _stmpSettings.EnableSSL,
+                UseDefaultCredentials = _stmpSettings.UseDefaultCredentials,
                 Credentials = networkCredentials
             };
         }
@@ -88,7 +88,7 @@ namespace OfferMakerForCggCQRS.Application.Common.Services
             {
                 Subject = subject,
                 Body = body,
-                From = new MailAddress(_config.SenderAddress, _config.SenderDisplayName)
+                From = new MailAddress(_stmpSettings.SenderAddress, _stmpSettings.SenderDisplayName)
             };
 
             mail.To.Add(mailTo);
