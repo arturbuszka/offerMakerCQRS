@@ -18,7 +18,7 @@ namespace OfferMakerForCggCQRS.Infrastructure.Identity
             _roleManager = roleManager;
         }
 
-        public async Task<(Result Result, string roleId)> CreateRoleAsync(string name, string id)
+        public async Task<IdentityResult> CreateRoleAsync(string name, string id)
         {
             var role = new ApplicationRole
             {
@@ -31,7 +31,7 @@ namespace OfferMakerForCggCQRS.Infrastructure.Identity
             var result = await _roleManager.CreateAsync(role);
 
 
-            return (result.ToApplicationResult(), role.Id);
+            return result;
         }
     }
 }

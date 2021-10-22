@@ -28,12 +28,26 @@ namespace OfferMakerForCggCQRS.Infrastructure.Identity
             _emailService = emailService;
         }
 
-        public Task ActivateAccount(string SecurityStamp, string userId)
+
+        public async Task SendChangePasswordEmail(string userEmail)
         {
-            var user = _userManager.FindByIdAsync(userId);
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            await _emailService.ChangePasswordMail(userEmail, user.SecurityStamp, user.Id);
+        }
 
 
-            return user;
+
+        public async Task ActivateAccount(string securityStamp, string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null || user.SecurityStamp != securityStamp)
+            {
+
+            }
+
+            user.EmailConfirmed = true;
+            await _userManager.UpdateSecurityStampAsync(user);
         }
 
         public async Task<IdentityResult> CreateUserAsync(string userName, string userEmail, string password,  string role)
@@ -52,8 +66,8 @@ namespace OfferMakerForCggCQRS.Infrastructure.Identity
             await _userManager.AddToRoleAsync(user, role);
 
 
-            var activationUrl = _emailService.GetActivationUrl(user.SecurityStamp, user.Id);
-            await _emailService.ActivationMail(user.Email, activationUrl);
+
+            await _emailService.ActivationMail(user.Email, user.SecurityStamp, user.Id);
 
 
             return entity;
@@ -89,5 +103,7 @@ namespace OfferMakerForCggCQRS.Infrastructure.Identity
 
             return tokenHandler.WriteToken(token);
         }
+
+
     }
 }

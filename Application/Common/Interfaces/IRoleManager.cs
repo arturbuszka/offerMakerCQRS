@@ -1,4 +1,5 @@
-﻿using OfferMakerForCggCQRS.Application.Common.Models;
+﻿using Microsoft.AspNetCore.Identity;
+using OfferMakerForCggCQRS.Application.Common.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,6 @@ namespace OfferMakerForCggCQRS.Application.Common.Interfaces
 {
     public interface IRoleManager
     {
-        Task<(Result Result, string roleId)> CreateRoleAsync(string name, string id);
+        Task<IdentityResult> CreateRoleAsync(string name, string id);
     }
 }

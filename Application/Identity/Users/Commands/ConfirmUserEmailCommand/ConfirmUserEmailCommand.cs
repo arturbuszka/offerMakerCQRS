@@ -17,26 +17,16 @@ namespace OfferMakerForCggCQRS.Application.Identity.Users.Commands.ConfirmUserEm
         public class ConfirmUserEmailCommandHandler : IRequestHandler<ConfirmUserEmailCommand>
         {
 
-            private readonly ApplicationDbContext _context;
+            private readonly IUserManager _userManager;
 
-            public ConfirmUserEmailCommandHandler(ApplicationDbContext context)
+            public ConfirmUserEmailCommandHandler(IUserManager userManager)
             {
-                _context = context;
+                _userManager = userManager;
             }
 
             public async Task<Unit> Handle(ConfirmUserEmailCommand request, CancellationToken cancellationToken)
             {
-                var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == request.Id);
-
-                if ( user == null || user.SecurityStamp != request.SecurityStamp)
-                {
-
-                }
-
-                user.EmailConfirmed = true;
-                user.SecurityStamp = Guid.NewGuid().ToString();
-
-                await _context.SaveChangesAsync();
+                await _userManager.ActivateAccount(request.SecurityStamp, request.Id);
 
                 return Unit.Value;
             }

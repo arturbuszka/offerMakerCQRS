@@ -16,7 +16,7 @@ namespace OfferMakerForCggCQRS.Web.Controllers
     {
 
         [HttpGet("user/{securityStamp}/{id}")]
-        public async Task<ActionResult> CreateUser([FromRoute] string securityStamp, string id)
+        public async Task<ActionResult> SendUserConfirmEmail([FromRoute] string securityStamp, string id)
         {
             await Mediator.Send(new ConfirmUserEmailCommand() { SecurityStamp = securityStamp, Id = id });
             return Ok();

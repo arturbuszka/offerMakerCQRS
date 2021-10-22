@@ -23,8 +23,24 @@ namespace OfferMakerForCggCQRS.Application.Common.Services
         }
 
 
-        public async Task ActivationMail(string mailTo, string url)
+
+        public async Task ChangePasswordMail(string mailTo, string securityStamp, string userId)
         {
+
+            var url = GetPersonalUrl(securityStamp, userId);
+
+            string body = $"To change your password click here: {url}";
+            string subject = "Change password";
+
+            var mail = GetMessage(mailTo, body, subject);
+            await SendEmail(mail);
+        }
+
+
+        public async Task ActivationMail(string mailTo, string securityStamp, string userId)
+        {
+
+            var url = GetPersonalUrl(securityStamp, userId);
 
             string body = $"Your activation link: {url}";
             string subject = "Activate your account";
@@ -33,7 +49,7 @@ namespace OfferMakerForCggCQRS.Application.Common.Services
             await SendEmail(mail);
         }
 
-        public string GetActivationUrl(string securityStamp, string userId)
+        private string GetPersonalUrl(string securityStamp, string userId)
         {
             var url = $"{_networkSettings.Protocol}://{_networkSettings.Host}:{_networkSettings.Port}/account/user/{securityStamp}/{userId}";
 

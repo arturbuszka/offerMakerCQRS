@@ -9,7 +9,7 @@ namespace OfferMakerForCggCQRS.Application.Common.Interfaces
 {
     public interface IEmailService
     {
-        Task ActivationMail(string mailTo, string url);
-        string GetActivationUrl(string securityStamp, string userId);
+        Task ChangePasswordMail(string mailTo, string securityStamp, string userId);
+        Task ActivationMail(string mailTo, string securityStamp, string userId);
     }
 }
