@@ -34,7 +34,9 @@ namespace OfferMakerForCggCQRS.Application.Offers.Commands.UpdateOfferCommand
                 .AsQueryable()
                 .Where(x => x.OfferId == request.Id);
             _context.Products.RemoveRange(productsToRemove);
-            
+
+
+
 
             entity.City = request.City;
             entity.Street = request.Street;

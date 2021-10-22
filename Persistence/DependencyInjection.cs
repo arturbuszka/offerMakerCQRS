@@ -16,7 +16,7 @@ namespace OfferMakerForCggCQRS.Persistence
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
                 b => b.MigrationsAssembly(typeof(OffermakerDbContext).Assembly.FullName)));
 
-            services.AddScoped<IOffermakerDbContext>(provider => provider.GetService<OffermakerDbContext>());
+            services.AddScoped<IOffermakerDbContext, OffermakerDbContext>();
 
             return services;
         }

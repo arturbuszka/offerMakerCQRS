@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OfferMakerForCggCQRS.Application.Common.Interfaces;
 using OfferMakerForCggCQRS.Application.Common.PipelineBehaviours;
 using OfferMakerForCggCQRS.Application.Common.Services;
+using OfferMakerForCggCQRS.Application.Common.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,9 @@ namespace OfferMakerForCggCQRS.Application
             services.AddMediatR(Assembly.GetExecutingAssembly());
 
             services.AddScoped<IPdfConverter, PdfConverter>();
+            services.AddScoped<IEmailService, EmailService>();
+            services.AddSingleton<SmtpClientSettings>();
+            services.AddSingleton<NetworkSettings>();
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestLogger<>));

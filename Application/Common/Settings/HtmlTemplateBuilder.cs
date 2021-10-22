@@ -27,7 +27,7 @@ namespace OfferMakerForCggCQRS.Application.Common.Settings
             stringBuilder.Append($"<tbody>");
             foreach(var p in offer.Products)
             {
-                countProducts = countProducts + 1;
+                countProducts = countProducts++;
                 stringBuilder.Append($"<tr><td>{countProducts}</td><td>{p.Name}</td><td>{p.Quantity}</td><td>{p.PriceEach}</td><td>{p.PriceTotal}</td></tr>");
             }
 

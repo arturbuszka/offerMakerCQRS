@@ -27,9 +27,9 @@ namespace OfferMakerForCggCQRS.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> Create([FromBody] CreateOfferCommand command)
         {
-           var id =  await Mediator.Send(command);
+           await Mediator.Send(command);
             
-            return Ok(id);
+            return Ok();
         }
 
         [HttpGet("{id}")]

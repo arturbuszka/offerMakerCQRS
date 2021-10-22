@@ -61,9 +61,6 @@ namespace OfferMakerForCggCQRS
             services.AddInfrastructure(Configuration, Environment);
             services.AddPersistence(Configuration);
 
-            //services.AddDbContext<OffermakerDbContext>(options =>
-            //    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
-            //    b => b.MigrationsAssembly(typeof(OffermakerDbContext).Assembly.FullName)));
 
             services.AddSwaggerGen(c =>
             {
@@ -75,7 +72,6 @@ namespace OfferMakerForCggCQRS
                 });
 
             });
-            //services.AddScoped<IOffermakerDbContext>(provider => provider.GetService<OffermakerDbContext>());
 
             services.AddApplication();
 

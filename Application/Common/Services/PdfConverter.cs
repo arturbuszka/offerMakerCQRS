@@ -58,21 +58,21 @@ namespace OfferMakerForCggCQRS.Application.Common.Services
             }
             memory.Position = 0;
 
-            PdfFileModel file = new PdfFileModel(memory, GetContentType(filePath), filePath);
+            PdfFileModel file = new(memory, GetContentType(filePath), filePath);
             return file;
         }
 
-        private static string BuildHtmlTableString(List<ProductModel> products)
-        {
-            string stringBuilder = "";
-            foreach (var p in products)
-            {
-                p.ToString();
-                stringBuilder += $"<tr><td>Count</td><td>{p.Name}</td><td>{p.Quantity}</td><td>{p.PriceEach}</td><td>{p.PriceTotal}</td><td>{p.Description}</td></tr>";
-            }
+        //private static string BuildHtmlTableString(List<ProductModel> products)
+        //{
+        //    string stringBuilder = "";
+        //    foreach (var p in products)
+        //    {
+        //        p.ToString();
+        //        stringBuilder += $"<tr><td>Count</td><td>{p.Name}</td><td>{p.Quantity}</td><td>{p.PriceEach}</td><td>{p.PriceTotal}</td><td>{p.Description}</td></tr>";
+        //    }
 
-            return stringBuilder;
-        }
+        //    return stringBuilder;
+        //}
 
         private static GlobalSettings BuildGlobalSettings(int id, string filePath)
         {
@@ -101,7 +101,7 @@ namespace OfferMakerForCggCQRS.Application.Common.Services
             {
                 PagesCount = true,
                 HtmlContent = HtmlTemplateBuilder.HtmlStringBuilder(offer),
-                WebSettings = { DefaultEncoding = "utf-8", UserStyleSheet = Path.GetFullPath(@"C:\Users\OG KACIORR\source\repos\OfferMakerForCggCQRS\Application\Common\Settings\CssSettings.css") }
+                WebSettings = { DefaultEncoding = "utf-8", UserStyleSheet = Path.GetFullPath(@"D:\download\offerMakerCQRS-main\offerMakerCQRS-main\Application\Common\Settings\CssSettings.css") }
             };
 
             return objectSettings;

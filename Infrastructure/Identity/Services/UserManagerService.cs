@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using OfferMakerForCggCQRS.Application.Common.Exceptions;
+using OfferMakerForCggCQRS.Application.Common.Interfaces;
 using OfferMakerForCggCQRS.Application.Common.Models;
 using System;
 using System.Collections.Generic;
@@ -17,28 +18,45 @@ namespace OfferMakerForCggCQRS.Infrastructure.Identity
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly AuthenticationSettings _authenticationSettings;
+        private readonly IEmailService _emailService;
 
-        public UserManagerService(UserManager<ApplicationUser> userManager, AuthenticationSettings authenticationSettings, RoleManager<ApplicationRole> roleManager)
+        public UserManagerService(UserManager<ApplicationUser> userManager, AuthenticationSettings authenticationSettings, RoleManager<ApplicationRole> roleManager, IEmailService emailService)
         {
             _userManager = userManager;
             _authenticationSettings = authenticationSettings;
             _roleManager = roleManager;
+            _emailService = emailService;
         }
 
-        public async Task<(Result Result, string UserId)> CreateUserAsync(string userName, string userEmail, string role)
+        public Task ActivateAccount(string SecurityStamp, string userId)
+        {
+            var user = _userManager.FindByIdAsync(userId);
+
+
+            return user;
+        }
+
+        public async Task<IdentityResult> CreateUserAsync(string userName, string userEmail, string password,  string role)
         {
             var user = new ApplicationUser
             {
                 UserName = userName,
-                Email = userEmail,
+                Email = userEmail
             };
 
-            
+            var hashedPassword = _userManager.PasswordHasher.HashPassword(user, password);
+            user.PasswordHash = hashedPassword;
 
 
-            var result = await _userManager.CreateAsync(user);
+            var entity = await _userManager.CreateAsync(user);
             await _userManager.AddToRoleAsync(user, role);
-            return (result.ToApplicationResult(), user.Id);
+
+
+            var activationUrl = _emailService.GetActivationUrl(user.SecurityStamp, user.Id);
+            await _emailService.ActivationMail(user.Email, activationUrl);
+
+
+            return entity;
         }
 
         public async Task<string> LoginAsync(string userName)

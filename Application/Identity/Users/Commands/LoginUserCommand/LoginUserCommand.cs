@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using OfferMakerForCggCQRS.Application.Identity.Users.Commands.LoginUserCommand;
 using OfferMakerForCggCQRS.Infrastructure.Identity;
 using System;
 using System.Collections.Generic;
@@ -8,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace OfferMakerForCggCQRS.Application.Users.Commands.LoginUserCommand
 {
-    public class LoginUserCommand : IRequest<string>
+    public class LoginUserCommand : IRequest<AuthResponseModel>
     {
         public string UserName { get; set; }
 
-        public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, string>
+        public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, AuthResponseModel>
         {
             private readonly IUserManager _userManager;
 
@@ -21,11 +22,11 @@ namespace OfferMakerForCggCQRS.Application.Users.Commands.LoginUserCommand
                 _userManager = userManager;
             }
 
-            public async Task<string> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+            public async Task<AuthResponseModel> Handle(LoginUserCommand request, CancellationToken cancellationToken)
             {
                 var result = await _userManager.LoginAsync(request.UserName);
 
-                return result;
+                return new AuthResponseModel() { IsAuthSuccessful = true, Token = result };
 
             }
         }
