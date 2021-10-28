@@ -1,9 +1,6 @@
-﻿using OfferMakerForCggCQRS.Application.Offers.Commands.ConvertOfferToPdfCommand;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using OfferMakerForCggCQRS.Application.Offers.Commands.ConvertOfferToPdf;
 using System.Text;
-using System.Threading.Tasks;
+
 
 namespace OfferMakerForCggCQRS.Application.Common.Settings
 {

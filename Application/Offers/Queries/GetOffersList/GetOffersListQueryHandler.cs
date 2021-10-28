@@ -29,6 +29,10 @@ namespace OfferMakerForCggCQRS.Application.Offers.Queries.GetOffersList
         public async Task<PagedResult<OffersListVm>> Handle(GetOffersListQuery request, CancellationToken cancellationToken)
         {
 
+
+
+
+
             var paginationVariable = request.Pagination;
 
             var baseQuery = _context
@@ -36,10 +40,12 @@ namespace OfferMakerForCggCQRS.Application.Offers.Queries.GetOffersList
              .Include(p => p.Products)
              .Include(c => c.Client)
              .AsQueryable()
-               .Where(s => paginationVariable.SearchPhrase == null || (s.City.ToLower().Contains(paginationVariable.SearchPhrase.ToLower())));
+             .Where(s => paginationVariable.SearchPhrase == null || (s.City.ToLower().Contains(paginationVariable.SearchPhrase.ToLower())));
 
 
-            //.Where(s => paginationVariable.SearchPhrase == null || (s.WorkCity.ToLower().Contains(paginationVariable.SearchPhrase.ToLower())));
+
+
+
 
 
             if (!string.IsNullOrEmpty(paginationVariable.SortBy))

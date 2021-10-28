@@ -1,13 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OfferMakerForCggCQRS.Application.Products.Commands.CreateProductCommand;
-using OfferMakerForCggCQRS.Application.Products.Commands.DeleteProductCommand;
-using OfferMakerForCggCQRS.Application.Products.Commands.UpdateProductCommand;
+using OfferMakerForCggCQRS.Application.Products.Commands.CreateProduct;
+using OfferMakerForCggCQRS.Application.Products.Commands.DeleteProduct;
+using OfferMakerForCggCQRS.Application.Products.Commands.UpdateProduct;
 using OfferMakerForCggCQRS.Application.Products.Queries.GetProductDetail;
 using OfferMakerForCggCQRS.Application.Products.Queries.GetProductsList;
 using OfferMakerForCggCQRS.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace OfferMakerForCggCQRS.Web.Controllers
@@ -30,16 +27,14 @@ namespace OfferMakerForCggCQRS.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ProductsListVm>> GetAll()
+        public async Task<ActionResult<ProductsListDto>> GetAll()
         {
-
             return Ok(await Mediator.Send(new GetProductsListQuery()));
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update([FromBody] UpdateProductCommand command)
         {
-
             await Mediator.Send(command);
 
             return NoContent();

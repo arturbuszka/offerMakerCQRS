@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace OfferMakerForCggCQRS.Application.Clients.Queries.GetClientDetail
 {
-    public class GetClientDetailQueryHandler : IRequestHandler<GetClientDetailQuery, ClientDetailVm>
+    public class GetClientDetailQueryHandler : IRequestHandler<GetClientDetailQuery, ClientDetailDto>
     {
         private readonly IOffermakerDbContext _context;
         private readonly IMapper _mapper;
@@ -19,7 +19,7 @@ namespace OfferMakerForCggCQRS.Application.Clients.Queries.GetClientDetail
             _mapper = mapper;
         }
 
-        public async Task<ClientDetailVm> Handle(GetClientDetailQuery request, CancellationToken cancellationToken)
+        public async Task<ClientDetailDto> Handle(GetClientDetailQuery request, CancellationToken cancellationToken)
         {
             var entity = await _context.Clients.FindAsync(request.Id);
 
@@ -28,8 +28,7 @@ namespace OfferMakerForCggCQRS.Application.Clients.Queries.GetClientDetail
                 throw new NotFoundException(nameof(Client), request.Id);
             }
 
-           
-            return _mapper.Map<ClientDetailVm>(entity);
+            return _mapper.Map<ClientDetailDto>(entity);
         }
     }
 }

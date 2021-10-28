@@ -1,16 +1,11 @@
-﻿
-using DinkToPdf;
+﻿using DinkToPdf;
 using DinkToPdf.Contracts;
 using Microsoft.AspNetCore.StaticFiles;
 using OfferMakerForCggCQRS.Application.Common.Interfaces;
 using OfferMakerForCggCQRS.Application.Common.Models;
 using OfferMakerForCggCQRS.Application.Common.Settings;
-using OfferMakerForCggCQRS.Application.Offers.Commands.ConvertOfferToPdfCommand;
-using OfferMakerForCggCQRS.Domain.Entities;
-using System;
-using System.Collections.Generic;
+using OfferMakerForCggCQRS.Application.Offers.Commands.ConvertOfferToPdf;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace OfferMakerForCggCQRS.Application.Common.Services
@@ -27,12 +22,8 @@ namespace OfferMakerForCggCQRS.Application.Common.Services
 
         public string GeneratePdf(int id, ConvertOfferToPdfCommand offer)
         {
-
-            
             string fileName = $"{id}.pdf";
             string filePath = FilesSettings.FilePath+fileName;
-
-            //string tableString = BuildHtmlTableString(offer.Products);
 
             var glb = BuildGlobalSettings(id, filePath);
 
@@ -45,9 +36,11 @@ namespace OfferMakerForCggCQRS.Application.Common.Services
             };
 
             _convert.Convert(pdf);
-            return filePath;
 
+            return filePath;
         }
+
+
         public async Task<PdfFileModel> DownloadPdf(int id)
         {
             var filePath = FilesSettings.FilePath + $"{id}.pdf";
@@ -61,18 +54,6 @@ namespace OfferMakerForCggCQRS.Application.Common.Services
             PdfFileModel file = new(memory, GetContentType(filePath), filePath);
             return file;
         }
-
-        //private static string BuildHtmlTableString(List<ProductModel> products)
-        //{
-        //    string stringBuilder = "";
-        //    foreach (var p in products)
-        //    {
-        //        p.ToString();
-        //        stringBuilder += $"<tr><td>Count</td><td>{p.Name}</td><td>{p.Quantity}</td><td>{p.PriceEach}</td><td>{p.PriceTotal}</td><td>{p.Description}</td></tr>";
-        //    }
-
-        //    return stringBuilder;
-        //}
 
         private static GlobalSettings BuildGlobalSettings(int id, string filePath)
         {

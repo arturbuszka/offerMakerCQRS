@@ -9,6 +9,19 @@ namespace OfferMakerForCggCQRS.Web.Controllers
     {
         private IMediator _mediator;
 
-        protected IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetService<IMediator>();
+        protected IMediator Mediator
+        {
+            get
+            {
+                if (_mediator == null)
+                {
+                    return _mediator = HttpContext.RequestServices.GetService<IMediator>();
+                }
+                return _mediator;
+            }
+        }
+
+
+
     }
 }

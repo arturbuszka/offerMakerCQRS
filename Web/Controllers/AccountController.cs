@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using OfferMakerForCggCQRS.Application.Identity.Roles.Commands.CreateRoleCommand;
-using OfferMakerForCggCQRS.Application.Identity.Users.Commands.ConfirmUserEmailCommand;
-using OfferMakerForCggCQRS.Application.Users.Commands.CreateUserCommand;
-using OfferMakerForCggCQRS.Application.Users.Commands.LoginUserCommand;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Mvc;
+using OfferMakerForCggCQRS.Application.Identity.Roles.Commands.CreateRole;
+using OfferMakerForCggCQRS.Application.Identity.Users.Commands.ChangeUserPassword;
+using OfferMakerForCggCQRS.Application.Identity.Users.Commands.ConfirmUserAccount;
+using OfferMakerForCggCQRS.Application.Identity.Users.Commands.CreateUser;
+using OfferMakerForCggCQRS.Application.Identity.Users.Commands.LoginUser;
+using OfferMakerForCggCQRS.Application.Identity.Users.Commands.SendChangeUserPasswordEmail;
 using System.Threading.Tasks;
 
 namespace OfferMakerForCggCQRS.Web.Controllers
@@ -19,6 +17,21 @@ namespace OfferMakerForCggCQRS.Web.Controllers
         public async Task<ActionResult> SendUserConfirmEmail([FromRoute] string securityStamp, string id)
         {
             await Mediator.Send(new ConfirmUserEmailCommand() { SecurityStamp = securityStamp, Id = id });
+            return Ok();
+        }
+
+        [HttpPost("user/forgot/new/{securityStamp}/{id}")]
+        public async Task<ActionResult> ChangeUserPassword([FromBody] ChangeUserPasswordCommand command)
+        {
+            await Mediator.Send(command);
+            return Ok();
+        }
+
+
+        [HttpPost("user/forgot")]
+        public async Task<ActionResult> SendChangeUserPasswordEmail([FromBody] SendChangeUserPasswordEmailCommand command)
+        {
+            await Mediator.Send(command);
             return Ok();
         }
 

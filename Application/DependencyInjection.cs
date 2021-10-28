@@ -6,11 +6,7 @@ using OfferMakerForCggCQRS.Application.Common.Interfaces;
 using OfferMakerForCggCQRS.Application.Common.PipelineBehaviours;
 using OfferMakerForCggCQRS.Application.Common.Services;
 using OfferMakerForCggCQRS.Application.Common.Settings;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace OfferMakerForCggCQRS.Application
 {

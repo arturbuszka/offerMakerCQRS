@@ -1,20 +1,15 @@
 ﻿using AutoMapper;
 using MediatR;
 using OfferMakerForCggCQRS.Application.Common.Exceptions;
-using OfferMakerForCggCQRS.Application.Common.Mappings;
 using OfferMakerForCggCQRS.Domain.Entities;
 using OfferMakerForCggCQRS.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace OfferMakerForCggCQRS.Application.Products.Queries.GetProductDetail
 {
 
-
-    public class GetProductMenuDetailQueryHandler : IRequestHandler<GetProductMenuDetailQuery, ProductMenuDetailVm>
+    public class GetProductMenuDetailQueryHandler : IRequestHandler<GetProductMenuDetailQuery, ProductMenuDetailDto>
     {
         private readonly IOffermakerDbContext _context;
         private readonly IMapper _mapper;
@@ -25,7 +20,7 @@ namespace OfferMakerForCggCQRS.Application.Products.Queries.GetProductDetail
             _mapper = mapper;
         }
 
-        public async Task<ProductMenuDetailVm> Handle(GetProductMenuDetailQuery request, CancellationToken cancellationToken)
+        public async Task<ProductMenuDetailDto> Handle(GetProductMenuDetailQuery request, CancellationToken cancellationToken)
         {
             var entity = await _context.ProductsMenu
                 .FindAsync(request.Id);
@@ -35,7 +30,7 @@ namespace OfferMakerForCggCQRS.Application.Products.Queries.GetProductDetail
                 throw new NotFoundException(nameof(ProductMenu), request.Id);
             }
 
-            return _mapper.Map<ProductMenuDetailVm>(entity);
+            return _mapper.Map<ProductMenuDetailDto>(entity);
         }
 
 

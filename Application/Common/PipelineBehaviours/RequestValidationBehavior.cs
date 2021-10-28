@@ -32,7 +32,6 @@ namespace OfferMakerForCggCQRS.Application.Common.PipelineBehaviours
             }
 
             return await next();
-
         }
     }
 

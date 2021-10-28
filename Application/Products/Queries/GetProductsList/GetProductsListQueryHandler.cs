@@ -13,7 +13,7 @@ namespace OfferMakerForCggCQRS.Application.Products.Queries.GetProductsList
 {
 
 
-    public class GetProductsListQueryHandler : IRequestHandler<GetProductsListQuery, IList<ProductsListVm>>
+    public class GetProductsListQueryHandler : IRequestHandler<GetProductsListQuery, IList<ProductsListDto>>
     {
         private readonly IOffermakerDbContext _context;
         private readonly IMapper _mapper;
@@ -24,10 +24,10 @@ namespace OfferMakerForCggCQRS.Application.Products.Queries.GetProductsList
             _mapper = mapper;
         }
 
-        public async Task<IList<ProductsListVm>> Handle(GetProductsListQuery request, CancellationToken cancellationToken)
+        public async Task<IList<ProductsListDto>> Handle(GetProductsListQuery request, CancellationToken cancellationToken)
         {
             var entities = await _context.Products
-                .ProjectTo<ProductsListVm>(_mapper.ConfigurationProvider)
+                .ProjectTo<ProductsListDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 
             return entities;

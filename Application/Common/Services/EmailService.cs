@@ -1,9 +1,5 @@
 ﻿using OfferMakerForCggCQRS.Application.Common.Interfaces;
-using OfferMakerForCggCQRS.Application.Common.Models;
 using OfferMakerForCggCQRS.Application.Common.Settings;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
@@ -23,11 +19,9 @@ namespace OfferMakerForCggCQRS.Application.Common.Services
         }
 
 
-
         public async Task ChangePasswordMail(string mailTo, string securityStamp, string userId)
         {
-
-            var url = GetPersonalUrl(securityStamp, userId);
+            var url = GetPersonalUrlForClient(securityStamp, userId);
 
             string body = $"To change your password click here: {url}";
             string subject = "Change password";
@@ -39,7 +33,6 @@ namespace OfferMakerForCggCQRS.Application.Common.Services
 
         public async Task ActivationMail(string mailTo, string securityStamp, string userId)
         {
-
             var url = GetPersonalUrl(securityStamp, userId);
 
             string body = $"Your activation link: {url}";
@@ -49,18 +42,18 @@ namespace OfferMakerForCggCQRS.Application.Common.Services
             await SendEmail(mail);
         }
 
-        private string GetPersonalUrl(string securityStamp, string userId)
-        {
-            var url = $"{_networkSettings.Protocol}://{_networkSettings.Host}:{_networkSettings.Port}/account/user/{securityStamp}/{userId}";
+        private string GetPersonalUrl(string securityStamp, string userId) => 
+            $"{_networkSettings.Protocol}://{_networkSettings.Host}:{_networkSettings.Port}/account/user/{securityStamp}/{userId}";
 
-            return url;
-        }
+
+        private string GetPersonalUrlForClient(string securityStamp, string userId) =>
+            $"localhost:4200/account/forgot/new/{securityStamp}/{userId}";
+
 
         private async Task SendEmail(MailMessage mail)
         {
             SmtpClient smtpClient = GetSmtpClient();
             await smtpClient.SendMailAsync(mail);
-
         }
 
 
@@ -95,7 +88,5 @@ namespace OfferMakerForCggCQRS.Application.Common.Services
 
             return mail;
         }
-
-        
     }
 }

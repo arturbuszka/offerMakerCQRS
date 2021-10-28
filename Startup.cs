@@ -1,32 +1,12 @@
-using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using OfferMakerForCggCQRS.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 using FluentValidation;
-using OfferMakerForCggCQRS.Application.Common.PipelineBehaviours;
 using FluentValidation.AspNetCore;
-using OfferMakerForCggCQRS.Application.Common.Models;
-using OfferMakerForCggCQRS.Application.Common.Models.Pagination;
-using OfferMakerForCggCQRS.Infrastructure.Identity;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using OfferMakerForCggCQRS.Application.Common.Interfaces;
-using System.Security.Claims;
-using DinkToPdf.Contracts;
-using DinkToPdf;
-using OfferMakerForCggCQRS.Application.Common.Services;
 using OfferMakerForCggCQRS.Application;
 using OfferMakerForCggCQRS.Infrastructure;
 
@@ -55,8 +35,6 @@ namespace OfferMakerForCggCQRS
                 });
             });
 
-
-            //services.AddScoped<IUserContextService, UserContextService>();
             services.AddHttpContextAccessor();
             services.AddInfrastructure(Configuration, Environment);
             services.AddPersistence(Configuration);

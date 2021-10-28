@@ -1,16 +1,12 @@
 ﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using OfferMakerForCggCQRS.Application.Common.Interfaces;
 using OfferMakerForCggCQRS.Infrastructure.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace OfferMakerForCggCQRS.Infrastructure
 {
@@ -22,13 +18,13 @@ namespace OfferMakerForCggCQRS.Infrastructure
             configuration.GetSection("Authentication").Bind(authenticationSettings);
             services.AddSingleton(authenticationSettings);
 
-            services.AddScoped<IUserManager, UserManagerService>();
-            services.AddScoped<IRoleManager, RoleManagerService>();
+            services.AddScoped<IUserManager, UserManager>();
+            services.AddScoped<IRoleManager, RoleManager>();
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
 
-            services.AddScoped<IUserContextService, UserContextService>();
+            services.AddScoped<IUserContext, UserContext>();
             services.AddAuthentication(option =>
             {
                 option.DefaultAuthenticateScheme = "Bearer";

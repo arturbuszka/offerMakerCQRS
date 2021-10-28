@@ -1,13 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OfferMakerForCggCQRS.Application.Clients.Commands.CreateClientCommand;
-using OfferMakerForCggCQRS.Application.Clients.Commands.DeleteClientCommand;
-using OfferMakerForCggCQRS.Application.Clients.Commands.UpdateClientCommand;
+using OfferMakerForCggCQRS.Application.Clients.Commands.CreateClient;
+using OfferMakerForCggCQRS.Application.Clients.Commands.DeleteClient;
+using OfferMakerForCggCQRS.Application.Clients.Commands.UpdateClient;
 using OfferMakerForCggCQRS.Application.Clients.Queries.GetClientDetail;
 using OfferMakerForCggCQRS.Application.Clients.Queries.GetClientsList;
 using OfferMakerForCggCQRS.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace OfferMakerForCggCQRS.Web.Controllers
@@ -30,7 +27,7 @@ namespace OfferMakerForCggCQRS.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ClientsListVm>> GetAll()
+        public async Task<ActionResult<ClientsListDto>> GetAll()
         {
             return Ok(await Mediator.Send(new GetClientsListQuery()));
         }

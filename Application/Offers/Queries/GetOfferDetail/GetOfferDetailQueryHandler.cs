@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace OfferMakerForCggCQRS.Application.Offers.Queries.GetOfferDetail
 {
-    public class GetOfferDetailQueryHandler : IRequestHandler<GetOfferDetailQuery, OfferDetailVm>
+    public class GetOfferDetailQueryHandler : IRequestHandler<GetOfferDetailQuery, OfferDetailDto>
     {
         private readonly IOffermakerDbContext _context;
         private readonly IMapper _mapper;
@@ -22,7 +22,7 @@ namespace OfferMakerForCggCQRS.Application.Offers.Queries.GetOfferDetail
             _mapper = mapper;
         }
 
-        public async Task<OfferDetailVm> Handle(GetOfferDetailQuery request, CancellationToken cancellationToken)
+        public async Task<OfferDetailDto> Handle(GetOfferDetailQuery request, CancellationToken cancellationToken)
         {
             var entity = await _context.Offers
                         .Include(p => p.Products)
@@ -35,7 +35,7 @@ namespace OfferMakerForCggCQRS.Application.Offers.Queries.GetOfferDetail
                 throw new NotFoundException(nameof(Offer), request.Id);
             }
 
-            return _mapper.Map<OfferDetailVm>(entity);
+            return _mapper.Map<OfferDetailDto>(entity);
         }
 
 

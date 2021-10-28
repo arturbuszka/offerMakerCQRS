@@ -2,8 +2,6 @@
 using OfferMakerForCggCQRS.Application.Common.Interfaces;
 using OfferMakerForCggCQRS.Application.Common.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,7 +21,6 @@ namespace OfferMakerForCggCQRS.Application.Offers.Queries.GetOfferPdf
             Console.WriteLine("yoyo");
             var fileContent = await  _pdfConverter.DownloadPdf(request.Id);
             
-
             return fileContent;
 
         }
